@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>RocketBot</RootNamespace>
+    <AssemblyName>RocketBot</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="GOAP\**" />
+    <EmbeddedResource Remove="GOAP\**" />
+    <None Remove="GOAP\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FlatBuffers\FlatBuffers.Core.csproj" />
+    <ProjectReference Include="..\rlbot.flat\rlbot.flat.csproj" />
+  </ItemGroup>
+
+</Project>

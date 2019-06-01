@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RocketBot.PlayMaking\RocketBot.PlayMaking.csproj" />
+    <ProjectReference Include="..\RocketBot\RocketBot.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="port.cfg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

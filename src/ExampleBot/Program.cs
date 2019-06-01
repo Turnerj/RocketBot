@@ -11,7 +11,7 @@ namespace ExampleBot.Rookie
 			var text = File.ReadAllLines("port.cfg")[0];
 			var port = int.Parse(text);
 
-			var botManager = new BotManager<ExampleBot>();
+			var botManager = new BotManager<TestBot>();
 			botManager.Start(port);
 		}
 	}

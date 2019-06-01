@@ -1,49 +1,66 @@
-# RLBotCSharpExample
+# RocketBot
 
-Example of a Rocket League bot implemented in C#
+A .NET interface for writing your very own Rocket League bot. This implementation is heavily inspired by [RLBot](https://github.com/RLBot/RLBot) and uses the same Python interface.
+While RLBot also has a .NET implementation, this implementation is re-written from the ground up to be easier to use.
 
-## Usage Instructions
+## Features
 
-1. Make sure you've installed [Python 3.6 64 bit](https://www.python.org/ftp/python/3.6.5/python-3.6.5-amd64.exe). During installation:
-   - Select "Add Python to PATH"
-   - Make sure pip is included in the installation
-2. Install Visual Studio 2017 or newer. It should come with .NET Framework 4.6.1 or newer.
-3. Open RLBotCSharpExample\RLBotCSharpExample.sln in Visual Studio.
-4. In Visual Studio, click the "Start" button, which should compile and run the bot. Leave it running.
-5. Double click on run-gui.bat
-6. Click the 'Run' button. Rocket League should open automatically!
+- Built in .NET Standard, allowing bots to target .NET Core and all that it brings (eg. performance improvements)
+- Easier to use interfaces with no `.Value` calls required
+- A "Render Pipeline" that allows staging of rendering commands
 
-### Notes
+## Requirements
 
-- Bot behavior is controlled by `RLBotCSharpExample/RLBotCSharpExample/ExampleBot.cs`
-- Bot appearance is controlled by `CSharpPythonAgent/appearance.cfg`
+Make sure you've installed [Python 3.6 64 bit](https://www.python.org/ftp/python/3.6.5/python-3.6.5-amd64.exe). During installation:
+ - Select "Add Python to PATH"
+ - Make sure pip is included in the installation
 
-### Tournament submissions
+## Example Bot
+This bot is functionally the same as the example bot that RLBot provides for its .NET example. As you can see, the interfaces are similar if you are used to RLBot.
 
-When submitting to a tournament, you will need to include several files. 
+```csharp
+class ExampleBot : RocketBotBase
+{
+	public ExampleBot(string name, int team, int player) : base(name, team, player) { }
 
-Some can be found under RLBotCSharpExample/RLBotCSharpExample/bin after you compile in Visual Studio:
-- RLBotCSharpExample.exe
-- FlatBuffers.dll
-- RLBotDotNet.dll
-- port.cfg
+	public override Controller OnTick(WorldState worldState, IEnumerable<BallPredictionSlice> ballPrediction)
+	{
+		var controller = new Controller();
 
-You should also include the entire CSharpPythonAgent folder. This folder also contains a port.cfg file. *Make sure their contents are identical!*
+		var ballLocation = worldState.Ball.Physics.Location;
+		var carPhysics = worldState.Players[PlayerIndex].Physics;
+		var carLocation = carPhysics.Location;
+		var carRotation = carPhysics.Rotation;
 
-### Upgrades
+		var botToTargetAngle = Math.Atan2(ballLocation.Y - carLocation.Y, ballLocation.X - carLocation.X);
+		var botFrontToTargetAngle = botToTargetAngle - carRotation.Yaw;
+		// Correct the angle
+		if (botFrontToTargetAngle < -Math.PI)
+			botFrontToTargetAngle += 2 * Math.PI;
+		if (botFrontToTargetAngle > Math.PI)
+			botFrontToTargetAngle -= 2 * Math.PI;
 
-This project uses a package manager called NuGet to keep track of the RLBot framework.
-The framework will get updates periodically, and you'll probably want them, especially if you want to make sure
-your bot will work right in the next tournament! To upgrade:
+		// Decide which way to steer in order to get to the ball.
+		if (botFrontToTargetAngle > 0)
+			controller.Steer = 1;
+		else
+			controller.Steer = -1;
 
-1. Open the project in Visual Studio.
-2. Right click on the RLBotCSharpExample C# project, and choose "Manage NuGet Packages..."
-3. Click on the "Installed" tab. You should see a package called "RLBot.Framework".
-4. If an update is available, it should say so and give you the option to upgrade.
+		controller.Throttle = 1;
 
+		return controller;
+	}
+}
+```
 
-## Overview of how the C# bot interacts with Python
+## RocketBot.PlayMaking
 
-The C# bot executable is a server that listens for Python clients.
-When `CSharpPythonAgent/CSharpPythonAgent.py` is started by the RLBot framework, it connects to the C# bot server and tells it its info.
-Then the C# bot server controls the bot through the `RLBot_Core_Interface` DLL.
+The goal of RocketBot wasn't to just remake RLBot but to provide a more powerful and easier to use mechanism to write a bot. While the main library "RocketBot" is equivalent to RLBot's 
+.NET implementation, the goal is to provide a "play making" API for easier control over the bot. This will form an optional library called "RocketBot.PlayMaking".
+
+Planned features include:
+- Movement calculation helpers (eg. calculate the optimal yaw for a vehicle)
+- Inter-bot communication (allowing a team of bots to co-ordinate actions)
+- Macro and Micro actions (eg. "move to X when Y", "get boost when X", "demo player" - these are so you don't need to do the math yourself)
+
+Note: These features are NOT available yet, just what is planned through RocketBot.

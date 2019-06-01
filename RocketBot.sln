@@ -9,6 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlatBuffers.Core", "src\Fla
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "global", "global", "{D614A4B6-19BD-4FAC-8899-8799C9C59C6B}"
 	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
 		run\run-gui.bat = run\run-gui.bat
 	EndProjectSection
 EndProject
@@ -21,7 +22,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RocketBot", "src\RocketBot\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleBot", "src\ExampleBot\ExampleBot.csproj", "{349CA9CE-7DC0-4CF9-A505-E48019DE08C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketBot.PlayMaking", "src\RocketBot.PlayMaking\RocketBot.PlayMaking.csproj", "{A7CECA7A-59E5-4349-A64C-643EAC45ECB4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RocketBot.PlayMaking", "src\RocketBot.PlayMaking\RocketBot.PlayMaking.csproj", "{A7CECA7A-59E5-4349-A64C-643EAC45ECB4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
